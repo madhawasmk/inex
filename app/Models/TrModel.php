@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CatModel extends Model
+class TrModel extends Model
 {
-    protected $table            = 'category';
-    protected $primaryKey       = 'catid';
+    protected $table            = 'transaction';
+    protected $primaryKey       = 'trid';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['catname','cattype','catdesc'];
+    protected $allowedFields    = ['trdate','trname','trcategory','tramount'];
 
     protected bool $allowEmptyInserts = true;
     protected bool $updateOnlyChanged = true;
@@ -43,28 +43,22 @@ class CatModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-	
-	public function getAllCats(){
+
+    public function getAllTrs(){
 		$db = db_connect();
-		$builder = $db->table('category');
+		$builder = $db->table('transaction');
 		$builder->select('*');
-        $builder->orderBy('cattype ASC','catname ASC');
 		$records = $builder->get();
         $result = $records->getResult('array');
-        $cats = [
+        $trs = [
 			" " => " -- Select One -- ",
 		];
-        foreach($result as $cat){
-            if($cat['deleted_at'] == null){
-                if($cat['cattype'] == 1){
-                    $cats[$cat['catid']] = "Income -> ".$cat['catname'];
-                }
-                else{
-                    $cats[$cat['catid']] = "Expense -> ".$cat['catname'];
-                }
+        foreach($result as $tr){
+            if($tr['deleted_at'] == null){
+                $trs[$tr['trid']] = $tr['trid']." - ".$tr['trname']."(".$tr['trdate'].")";
             }
             
 		}
-		return $cats;
+		return $trs; 
 	}
 }

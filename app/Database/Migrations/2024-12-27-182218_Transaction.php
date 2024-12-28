@@ -27,9 +27,10 @@ class Transaction extends Migration
 				'type' => 'INT',
 				'null' => false
             ],
-			'isdeleted' => [
-				'type' => 'INT',
-				'default' => 0
+			'tramount' => [
+				'type' => 'DOUBLE',
+				'default' => 0,
+				'null' => false
             ],
             'created_at' => [
 				'type' => 'TIMESTAMP',

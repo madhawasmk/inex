@@ -12,17 +12,18 @@
 		$(document).ready(function(){
 			$("form").submit(function(){
 				event.preventDefault();
-				$.post("<?php echo base_url("index.php/category/create"); ?>",
+				$.post("<?php echo base_url("index.php/transaction/create"); ?>",
 				{
-					txtcatname: document.forms['frmaddcat']['txtcatname'].value,
-					radcattype: document.forms['frmaddcat']['radcattype'].value,
-					txtdesc: document.forms['frmaddcat']['txtdescription'].value,
+					txttrdate: document.forms['frmaddtr']['txttrdate'].value,
+					txttdetail: document.forms['frmaddtr']['txttdetail'].value,
+					cmbtrcategory: document.forms['frmaddtr']['cmbtrcategory'].value,
+					numtramount: document.forms['frmaddtr']['numtramount'].value
 				},
 			  	function(data, status){
 					document.getElementById("alertbox").className = "alert alert-success";
 					document.getElementById("alertbox").innerHTML = data.message;
 					document.getElementById("alertbox").style.display = "block";
-					document.forms['frmaddcat'].reset();
+					document.forms['frmaddtr'].reset();
 			  	}).fail(function(jqXHR, status, errorThrown){
 					const obj = JSON.parse(jqXHR.responseText);
 					console.log(obj);
@@ -48,14 +49,14 @@
     <a class="nav-link " href="<?php echo base_url("home"); ?>">Home</a>
   </li>
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" href="#">Categories</a>
+    <a class="nav-link dropdown-toggle " data-bs-toggle="dropdown" href="#">Categories</a>
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="<?php echo base_url("categories/add"); ?>">Add Categories</a></li>
       <li><a class="dropdown-item" href="<?php echo base_url("categories/edit"); ?>">Edit Categories</a></li>
     </ul>
   </li>
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Transactions</a>
+    <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" href="#">Transactions</a>
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="<?php echo base_url("transactions/add"); ?>">Add Transactions</a></li>
       <li><a class="dropdown-item" href="<?php echo base_url("transactions/edit"); ?>">Edit Transactions</a></li>
@@ -75,52 +76,58 @@
 	
   <div class="row">
 	<div class="col-sm-12">  
-      <h3>Add Categories</h3>
+      <h3>Add Transactions</h3>
 		<div class="" id="alertbox"></div>
       	<?php 
 			$attributes = [
-				'name' => 'frmaddcat'
+				'name' => 'frmaddtr'
 			];
-			echo form_open('',$attributes); 
+			echo form_open('',$attributes);
 			echo "<div class='mb-3 mt-3'>";
 			$attributes = [
-				'name' => 'txtcatname',
+				'name' => 'txttrdate',
 				'class' => 'form-control',
-				'type' => "text",
+				'type' => "date",
 				'value' => "",
 				'required' => true,
 			];
-			echo form_label("Category Name : ","Category Name");
+			echo form_label("Transaction Date : ","Transaction Date");
 			echo form_input($attributes); 
 			echo "</div>";
 		
 			echo "<div class='mb-3 mt-3'>";
 			$attributes = [
-				'name' => 'radcattype',
+				'name' => 'txttdetail',
+				'class' => 'form-control',
+				'type' => "text",
+				'value' => "",
 				'required' => true,
 			];
-			echo form_label("Category Type :","Category Type");
-			echo "<div class='row'>";	
-			echo "<div class='col-sm-3'>";
-			echo form_radio('radcattype', '1', false,$attributes );
-			echo "Income";
-			echo "</div>";
-			echo "<div class = 'col-sm-3'>";
-			echo form_radio('radcattype', '2', false,$attributes);
-			echo "Expense";
-			echo "</div>";
+			echo form_label("Transaction Detail : ","Transaction Detail");
+			echo form_input($attributes); 
 			echo "</div>";
 		
 			echo "<div class='mb-3 mt-3'>";
-			$attributes = [
-				'name' => 'txtdescription',
+			$attributes = array(
 				'class' => 'form-control',
+				'required' => 'required',
+				'id' => 'cmbtrcategory',
+			);
+			echo form_label("Transaction Category : ","Transaction Category");
+			echo form_dropdown('cmbtrcategory',$cats,"",$attributes);
+			echo "</div>";
+
+			echo "<div class='mb-3 mt-3'>";
+			$attributes = [
+				'name' => 'numtramount',
+				'class' => 'form-control',
+				'type' => "number",
 				'value' => "",
-				'rows' => 3,
 				'required' => true,
+				'min' => 0,
 			];
-			echo form_label("Description : ","Description");
-			echo form_textarea($attributes); 
+			echo form_label("Transaction Amount : ","Transaction Amount");
+			echo form_input($attributes); 
 			echo "</div>";
 		
 			$attributes = [
