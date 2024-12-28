@@ -26,4 +26,29 @@ class App extends BaseController
 
 		return view('home');
     }
+	
+	public function addcat()
+    {
+		$session = \Config\Services::session();
+        $sessiondata = $session->get();
+        if(!(isset($sessiondata['logged'])) || !$sessiondata['logged']){
+            $this->response->redirect(base_url()); 
+            return false;
+        }
+
+		return view('addcat');
+    }
+	
+	public function editcat()
+    {
+		$session = \Config\Services::session();
+        $sessiondata = $session->get();
+        if(!(isset($sessiondata['logged'])) || !$sessiondata['logged']){
+            $this->response->redirect(base_url()); 
+            return false;
+        }
+		$this->catmodel = new CatModel();
+		$data['cats'] = $this->catmodel->getAllCats();
+		return view('editcat',$data);
+    }
 }

@@ -20,7 +20,13 @@ class Category extends Migration
 				'constraint' => '255',
             ],
             'cattype' => [
-				'type' => 'TEXT'
+				'type' => 'INT'
+				'null' => false
+            ],
+			'catdesc' => [
+				'type' => 'VARCHAR',
+				'constraint' => '500',
+				'null' => true
             ],
 			'isdeleted' => [
 				'type' => 'INT',
