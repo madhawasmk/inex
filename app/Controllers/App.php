@@ -81,4 +81,28 @@ class App extends BaseController
 		$data['cats'] = $this->catmodel->getAllCats();
 		return view('edittr',$data);
     }
+
+	public function income_analyse()
+	{
+		$session = \Config\Services::session();
+        $sessiondata = $session->get();
+        if(!(isset($sessiondata['logged'])) || !$sessiondata['logged']){
+            $this->response->redirect(base_url()); 
+            return false;
+        }
+		
+		return view("income");
+	}
+
+	public function expense_analyse()
+	{
+		$session = \Config\Services::session();
+        $sessiondata = $session->get();
+        if(!(isset($sessiondata['logged'])) || !$sessiondata['logged']){
+            $this->response->redirect(base_url()); 
+            return false;
+        }
+		
+		return view("expense");
+	}
 }

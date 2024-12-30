@@ -9,6 +9,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->resource('category', ['controller' => 'Category', 'only' => ['index', 'show', 'create', 'update', 'delete']]);
 $routes->resource('transaction', ['controller' => 'Transaction', 'only' => ['index', 'show', 'create', 'update', 'delete']]);
 $routes->resource('user', ['controller' => 'User']);//, 'only' => ['index', 'show', 'create', 'update', 'delete']]);
+$routes->get('/report/income', 'Report::income');
+$routes->get('/report/expense', 'Report::expense');
 
 $routes->get('/', 'App::index');
 $routes->get('/home', 'App::home');
@@ -18,6 +20,8 @@ $routes->get('/categories/edit', 'App::editcat');
 $routes->get('/transactions', 'App::addtr');
 $routes->get('/transactions/add', 'App::addtr');
 $routes->get('/transactions/edit', 'App::edittr');
+$routes->get('/reports/income', 'App::income_analyse');
+$routes->get('/reports/expense', 'App::expense_analyse');
 
 $routes->post('/user/login', 'User::login');
 

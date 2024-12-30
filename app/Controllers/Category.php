@@ -41,7 +41,12 @@ class Category extends ResourceController
         }
         $data = $this->model->find($id);
         if(is_null($data)) {
-            return $this->fail(['error' => 'Category does not exist'], 404);
+			$response = [
+                'status' => 'error',
+                'message' => 'Category does not exist.',
+                'errors' => $this->model->errors()
+            ];
+            return $this->fail($response, 404);
         }
  
         return $this->respond($data,200);

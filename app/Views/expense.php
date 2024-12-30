@@ -8,6 +8,36 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<link href="<?php echo base_url("assets/style.css"); ?>" rel="stylesheet">
+	<script>
+		$(document).ready(function(){
+			$.get("<?php echo base_url("report/expense"); ?>",{},
+			function(data, status){
+				console.log(data);
+				var result="";
+				var total = 0.00;
+				for(i=0; i<data.length; i++){
+					result += "<tr>";
+					result += "<td class='text-center'>"+data[i].trdate+"</td>";
+					result += "<td class='text-center'>"+data[i].trname+"</td>";
+					result += "<td class='text-center'>"+data[i].catname+"</td>";
+					result += "<td style='text-align: right; padding-right: 10px;'>"+parseFloat(data[i].tramount).toFixed(2)+"</td>";
+					total += parseFloat(data[i].tramount);
+					result += "</tr>";
+				}
+				result += "<tr><th class='text-center' colspan='3'>Total</th><th style='text-align: right; padding-right: 10px;'>"+total.toFixed(2)+"</th></tr>";
+				
+				document.getElementById("expensetable").innerHTML += result;
+				
+			}).fail(function(jqXHR, status, errorThrown){
+				const obj = JSON.parse(jqXHR.responseText);
+				document.getElementById("alertbox").className = "alert alert-danger";
+				document.getElementById("alertbox").innerHTML = obj.messages.message;
+				document.getElementById("alertbox").style.display = "block";
+			});
+		});
+
+
+	</script>
 </head>
 <body>
 
@@ -19,7 +49,7 @@
 	
 	<ul class="nav nav-pills">
   <li class="nav-item">
-    <a class="nav-link active" href="<?php echo base_url("home"); ?>">Home</a>
+    <a class="nav-link" href="<?php echo base_url("home"); ?>">Home</a>
   </li>
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Categories</a>
@@ -36,7 +66,7 @@
     </ul>
   </li>
 	<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Reports</a>
+    <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" href="#">Reports</a>
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="<?php echo base_url("reports/income"); ?>">Income Analysis</a></li>
       <li><a class="dropdown-item" href="<?php echo base_url("reports/expense"); ?>">Expense Analysis</a></li>
@@ -49,36 +79,19 @@
 	
 	<div class="row">
 	<div class="col-sm-12">  
-      <h3>Dashboard</h3>
-		<div class="row">
-			<div class="col-sm-4">
-				<div class="card">
-				  <div class="card-header text-center bg-secondary text-white">Categories</div>
-				  <div class="card-body text-center">
-					<button class="btn btn-success btn-lg" onClick="window.location='<?php echo base_url("categories/add"); ?>'">Add</button><br><br>
-					 <button class="btn btn-warning btn-lg" onClick="window.location='<?php echo base_url("categories/edit"); ?>'">Edit</button> 
-				</div>
-				</div>
-			</div>
-			<div class="col-sm-4">
-				<div class="card">
-				  <div class="card-header text-center bg-secondary text-white">Transactions</div>
-				  <div class="card-body text-center">
-					<button class="btn btn-success btn-lg" onClick="window.location='<?php echo base_url("transactions/add"); ?>'">Add</button><br><br>
-					 <button class="btn btn-warning btn-lg" onClick="window.location='<?php echo base_url("transactions/edit"); ?>'">Edit</button> 
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-4">
-				<div class="card">
-				  <div class="card-header text-center bg-secondary text-white">Reports</div>
-				  <div class="card-body text-center">
-					<button class="btn btn-success btn-lg" onClick="window.location='<?php echo base_url("reports/income"); ?>'">Income</button><br><br>
-					 <button class="btn btn-warning btn-lg" onClick="window.location='<?php echo base_url("reports/expense"); ?>'">Expense</button> 
-					</div>
-				</div>
-			</div>
-		</div>
+      <h3>Expense Analysis</h3>
+		<div id="alertbox" style="display:none;"></div>
+		
+		<table class="table table-bordered table-hover">
+			<tbody id="expensetable">
+				<tr>
+					<th class="text-center">Date</th>
+					<th class="text-center">Description</th>
+					<th class="text-center">Category</th>
+					<th class="text-center">Amount</th>
+				</tr>
+			</tbody>
+		</table>
   </div>
 </div>
 </body>

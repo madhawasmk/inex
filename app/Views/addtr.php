@@ -65,8 +65,8 @@
 	<li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Reports</a>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="reports/income">Income Analysis</a></li>
-      <li><a class="dropdown-item" href="reports/expense">Expense Analysis</a></li>
+      <li><a class="dropdown-item" href="<?php echo base_url("reports/income"); ?>">Income Analysis</a></li>
+      <li><a class="dropdown-item" href="<?php echo base_url("reports/expense"); ?>">Expense Analysis</a></li>
     </ul>
   </li>	
 	<li class="nav-item">
