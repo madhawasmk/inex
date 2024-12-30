@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8090:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Qwerty@123
+      MYSQL_DATABASE: inex
+      MYSQL_USER: madhawa
+      MYSQL_PASSWORD: Qwerty@123
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+
+  phpmyadmin: 
+    image: phpmyadmin/phpmyadmin 
+    restart: always 
+    ports: 
+      - "8081:80" 
+    environment: 
+        PMA_HOST: db # Refers to the 'db' service (MySQL container) 
+        MYSQL_ROOT_PASSWORD: Qwerty@123 # Match with the root password of MySQL
+
+volumes:
+  db_data:
